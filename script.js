@@ -1,3 +1,8 @@
+const btnR = document.querySelector('#rock');
+const btnP = document.querySelector('#paper');
+const btnS = document.querySelector('#scissors');
+
+
 // function called computerPlay that will randomly return: 'Rock', 'Paper', or 'Scissors'.
 function computerPlay() {
     let options = ['rock', 'paper', 'scissors']; 
@@ -16,12 +21,12 @@ let computerScore = 0;
 let playerScore = 0;
 
 // function called game. uses previous function, keeps score, reports winner at end
-function game() {
-   for (let i = 0; i <= 4; i++) {
-play(playerPlay(), computerPlay());
-   }
+//function game() {
+//   for (let i = 0; i <= 4; i++) {
+//play(playerPlay(), computerPlay());
+//   }
 // function that plays one round of rps. 
-// function should take two parameters, playerSelection (case insensitive) and computer Selection
+// function w/ two parameters, playerSelection (case insensitive) and computerSelection
 // then return a string that declares the winner of the round
 function play(playerSelection, computerSelection) {
     if (playerSelection == computerSelection) {
@@ -48,7 +53,7 @@ function play(playerSelection, computerSelection) {
        play(playerPlay(), computerPlay());
    }
 }
-}
+play(playerPlay(), computerPlay());
 //
 game();
 if (computerScore > playerScore) {
