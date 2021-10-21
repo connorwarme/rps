@@ -1,6 +1,9 @@
 const rock = document.querySelector('#rock');
+rock.setAttribute('data-value', 'rock');
 const paper = document.querySelector('#paper');
+paper.setAttribute('data-value', 'paper');
 const scissors = document.querySelector('#scissors');
+scissors.setAttribute('data-value', 'scissors');
 let computerScore = 0;
 let playerScore = 0;
 
@@ -22,6 +25,8 @@ container.appendChild(div);
 div.appendChild(para);
 const roundResult = document.createElement('h4');
 div.appendChild(roundResult);
+const gameOver = document.createElement('h1');
+div.appendChild(gameOver);
 const div2 = document.createElement("div");
 const h3 = document.createElement('h3');
 h3.textContent = "SCOREBOARD";
@@ -35,23 +40,12 @@ div2.appendChild(p2);
 container.appendChild(div2);
 
 
-// function called computerPlay that will randomly return: 'Rock', 'Paper', or 'Scissors'.
 function computerPlay() {
     let options = ['rock', 'paper', 'scissors']; 
     let computerAnswer = options[Math.floor(Math.random()*options.length)];
     console.log(computerAnswer);
     return (computerAnswer);
  }
- const playerPlay = 
-rock.addEventListener("click", e => {
-   playerPlay = "rock";
-});
-paper.addEventListener("click", e => {
-   playerPlay = "paper";
-});
-scissors.addEventListener("click", e => {
-   playerPlay = "scissors";
-});
 
 function play (playerSelection, computerSelection) {
    if (playerSelection == computerSelection) {
@@ -60,31 +54,38 @@ function play (playerSelection, computerSelection) {
    else if ((playerSelection == 'rock' && computerSelection == 'paper') || (playerSelection == 'paper' && computerSelection == 'scissors') || (playerSelection == 'scissors' && computerSelection == 'rock')) {
       roundResult.textContent = "Result: You lost!";
       ++computerScore;
+      p2.textContent = `Computer Score: ${computerScore}`;
   }
    else if ((playerSelection == 'rock' && computerSelection == 'scissors') || (playerSelection == 'scissors' && computerSelection == 'paper') || (playerSelection == 'paper' && computerSelection == 'rock')) {
       roundResult.textContent = "Result: You won!";
       ++playerScore;
+      p1.textContent = `Player Score: ${playerScore}`;
   }
    else {
       roundResult.textContent = "Result: something broke.";
   }
 }
-
-let game = function () {
-   for (let i = 0; (playerScore <= 5 && computerScore <= 5); i++) {
-play(playerPlay, computerPlay());
-   };
+const end = 5;
+function checkResult (pScore, cScore) {
+   switch (end) {
+      case pScore:
+         gameOver.textContent = `Game over. Player wins!`;
+         div.removeChild(roundResult);
+         break;
+      case cScore:
+         gameOver.textContent = `Game over. Computer wins!`;
+         div.removeChild(roundResult);
+         break;
+      default:
+         console.log("didn't work");
+   }
 }
 
-// game();
-if (computerScore > playerScore) {
-   x = "Computer";
-} 
-else if (computerScore < playerScore) {
-   x = "Player";
-}
-else {
-   alert(`The scoreboard is broken.`)
-}
-let winner = x;
-roundResult.cssText = "`Game over. ${winner} wins!`";
+[rock, paper, scissors].forEach((rps) => {
+   rps.addEventListener('click', (e) => {
+     const playerPlay = e.target.id;
+      console.log(playerPlay);
+      play(playerPlay, computerPlay());
+      checkResult(playerScore, computerScore);
+      });
+});
