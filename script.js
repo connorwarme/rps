@@ -1,6 +1,38 @@
-const btnR = document.querySelector('#rock');
-const btnP = document.querySelector('#paper');
-const btnS = document.querySelector('#scissors');
+const rock = document.querySelector('#rock');
+const paper = document.querySelector('#paper');
+const scissors = document.querySelector('#scissors');
+let computerScore = 0;
+let playerScore = 0;
+
+rock.style.backgroundColor = 'granite';
+paper.style.backgroundColor = 'white';
+scissors.style.backgroundColor = 'orange';
+[rock, paper, scissors].forEach((rps) => {
+rps.style.padding = "15px";
+rps.style.fontWeight = "650";
+rps.style.margin = "30px";
+rps.style.border = "2px solid black";
+rps.style.borderRadius = "5px";
+});
+const container = document.querySelector("#container");
+const div = document.createElement("div");
+const para = document.createElement("p");
+para.textContent = "Prepare for conflict - click on your weapon of choice."
+container.appendChild(div);
+div.appendChild(para);
+const roundResult = document.createElement('h4');
+div.appendChild(roundResult);
+const div2 = document.createElement("div");
+const h3 = document.createElement('h3');
+h3.textContent = "SCOREBOARD";
+const p1 = document.createElement('p');
+const p2 = document.createElement('p');
+p1.textContent = `Player Score: ${playerScore}`;
+p2.textContent = `Computer Score: ${computerScore}`;
+div2.appendChild(h3);
+div2.appendChild(p1);
+div2.appendChild(p2);
+container.appendChild(div2);
 
 
 // function called computerPlay that will randomly return: 'Rock', 'Paper', or 'Scissors'.
@@ -10,52 +42,41 @@ function computerPlay() {
     console.log(computerAnswer);
     return (computerAnswer);
  }
+ const playerPlay = 
+rock.addEventListener("click", e => {
+   playerPlay = "rock";
+});
+paper.addEventListener("click", e => {
+   playerPlay = "paper";
+});
+scissors.addEventListener("click", e => {
+   playerPlay = "scissors";
+});
 
-function playerPlay() {
-   return (prompt('Input your selection: rock, paper, or scissors!').toLowerCase());
-}
-// want to run a check to confirm proper player input - how?
-
-// how to track score?
-let computerScore = 0;
-let playerScore = 0;
-
-// function called game. uses previous function, keeps score, reports winner at end
-//function game() {
-//   for (let i = 0; i <= 4; i++) {
-//play(playerPlay(), computerPlay());
-//   }
-// function that plays one round of rps. 
-// function w/ two parameters, playerSelection (case insensitive) and computerSelection
-// then return a string that declares the winner of the round
-function play(playerSelection, computerSelection) {
-    if (playerSelection == computerSelection) {
-      alert(`You\'ve chosen the same object. Try again!
-      Current score:
-      player - ${playerScore}
-      computer - ${computerScore}`);
-      play(playerPlay(), computerPlay());
+function play (playerSelection, computerSelection) {
+   if (playerSelection == computerSelection) {
+      roundResult.textContent = "Result: Tie!";
+ }
+   else if ((playerSelection == 'rock' && computerSelection == 'paper') || (playerSelection == 'paper' && computerSelection == 'scissors') || (playerSelection == 'scissors' && computerSelection == 'rock')) {
+      roundResult.textContent = "Result: You lost!";
+      ++computerScore;
   }
-    else if ((playerSelection == 'rock' && computerSelection == 'paper') || (playerSelection == 'paper' && computerSelection == 'scissors') || (playerSelection == 'scissors' && computerSelection == 'rock')) {
-       alert(`You lost - ${computerSelection} beats ${playerSelection}!
-       Current score:
-       player - ${playerScore}
-       computer - ${++computerScore}`);
-   }
-    else if ((playerSelection == 'rock' && computerSelection == 'scissors') || (playerSelection == 'scissors' && computerSelection == 'paper') || (playerSelection == 'paper' && computerSelection == 'rock')) {
-       alert(`You won - ${playerSelection} beats ${computerSelection}!
-       Current score:
-       player - ${++playerScore}
-       computer - ${computerScore}`);
-   }
-    else {
-       alert('I\'m broken, let\'s try again.');
-       play(playerPlay(), computerPlay());
-   }
+   else if ((playerSelection == 'rock' && computerSelection == 'scissors') || (playerSelection == 'scissors' && computerSelection == 'paper') || (playerSelection == 'paper' && computerSelection == 'rock')) {
+      roundResult.textContent = "Result: You won!";
+      ++playerScore;
+  }
+   else {
+      roundResult.textContent = "Result: something broke.";
+  }
 }
-play(playerPlay(), computerPlay());
-//
-game();
+
+let game = function () {
+   for (let i = 0; (playerScore <= 5 && computerScore <= 5); i++) {
+play(playerPlay, computerPlay());
+   };
+}
+
+// game();
 if (computerScore > playerScore) {
    x = "Computer";
 } 
@@ -66,8 +87,4 @@ else {
    alert(`The scoreboard is broken.`)
 }
 let winner = x;
-
-alert(`Game over. ${winner} wins!
-Final score:
-player - ${playerScore}
-computer - ${computerScore}`);
+roundResult.cssText = "`Game over. ${winner} wins!`";
